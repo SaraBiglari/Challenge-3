@@ -15,6 +15,7 @@ using namespace std;
 
 #define DAEMON_NAME "vdaemon"
 #define BACKLOG 5
+#define BUF_SIZE 16
 
 void process()
 {
@@ -23,7 +24,7 @@ void process()
 	
 	// create a new server socket with domain: AF_UNIX, type:SOCK_STREAM, protocol:0
 	int sfd= socket(AF_UNIX, SOCK_STREAM, 0);
-	printf("server socket fd=%d"\n, sfd);
+	printf("server socket fd=%d\n", sfd);
 	
 	if(sfd == -1) {errExit("socket");}
 	if(strlen(SV_SOCK_PATH)>sizeof(addr.sun_path)-1)
@@ -57,7 +58,7 @@ void process()
 	char buf[BUF_SIZE];
 	for(;;)  //handle client connections iteratively
 	{
-		printf(""waiting to accept a connection...\n);
+		printf("waiting to accept a connection...\n");
 		int cfd= accept(sfd, NULL, NULL);
 		printf("Accepted socket fd=%d\n", cfd);
 		// transfer data from connected socket to stdout until EOF
